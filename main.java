@@ -19,17 +19,26 @@ public class main {
             File file = new File("file");
             String[] inputStringArray = {"name:Ivanov", "country:Russia", "city:Moscow", "age:null"};
             for(int i = 0; i < inputStringArray.length; i++){
-                inputStringArray[i] = inputStringArray[i].replace(":", " for ");
+                if (inputStringArray[i].contains("null")){
+                    continue;
+                } else {
+
+                    inputStringArray[i] = inputStringArray[i].replace(":", " = '");
+                    StringBuilder sb = new StringBuilder(inputStringArray[i]);
+                    sb.append("'");
+                    inputStringArray[i] = sb.toString();;
+                }
             }
             FileWriter writer = new FileWriter(file);
             writer.write("select * from students where");
             for(int i = 0; i < inputStringArray.length; i++){
-                if (i != inputStringArray.length - 1){
-                    writer.write(" " + inputStringArray[i] + " AND");
-                }
-                else {
+                if ((i == 0) && (!inputStringArray[i].contains(":"))){
                     writer.write(" " + inputStringArray[i]);
+                } else if ((i != 0) && (!inputStringArray[i].contains(":"))){
+                    writer.write( " AND " + inputStringArray[i]);
                 }
+
+
             }
             writer.close();
 
